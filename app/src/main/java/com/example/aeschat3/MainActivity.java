@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         for (int i = 0; i<stringMessageArray.length; i++) {
-                            String[] stringKeyValue = stringMessageArray[i].split("=", 2);
+                            String[] stringKeyValue = stringMessageArray[i].split("=", 2); // veritabanındaki iki nokta(:) çekerken '=' olarak geliyor
                             stringFinal[2 * i] = (String) android.text.format.DateFormat.format("dd-MM-yyyy hh:mm:ss", Long.parseLong(stringKeyValue[0]));
                             stringFinal[2 * i + 1] = AESDecryptionMethod(stringKeyValue[1]); //AES şeklinde çektiğimiz texti decrypt ediyoruz
                         }
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         public void sendMessageButton(View view) {
             Date date=new Date();
             databaseReference.child(Long.toString(date.getTime())).setValue(AESEncryptionMethod(editText.getText().toString()));
+
             editText.setText("");
 
         }
